@@ -5,21 +5,68 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [itemSearch, setItemSearch] = useState("")
+  //*State variables to get new items from form
+  const[newItemCategory, setNewItemCategory]=useState("Produce")
+  const[newItemName, setNewItemName]=useState("")
 
+  const[allItems, setAllItems]=useState(items)
+
+
+  //*function that gets new name of food
+  function handleFormNameChange(e) {
+    setNewItemName(e.target.value)
+    console.log(newItemName)
+  }
+  
+    
+  //*Create a function that grabs category for new item
+  function handleFormCatChange(e){
+    setNewItemCategory(e.target.value)
+    console.log(newItemCategory)
+  }
+  
+  //*function for handling form submit
+  function handleFormSubmit (e,index) {
+    e.preventDefault()
+    const newItem = {
+      id: items.length+1,
+      name: newItemName,
+      category: newItemCategory,
+    }
+    const newItemsArray = [...items,newItem]
+    setAllItems(newItemsArray)
+  }
+
+  //! Funtion for handle the seach of a single item
+  function onSearchChange(e){
+    setItemSearch(e.target.value)
+    console.log(itemSearch)
+  }
+
+//! Function for handlling the Category 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
   }
 
-  const itemsToDisplay = items.filter((item) => {
+//!Original function that filters items by category.
+  const itemsToDisplayByCategory = allItems.filter((item) => {
     if (selectedCategory === "All") return true;
-
     return item.category === selectedCategory;
   });
+//! New function that filters items by Name
+  const itemsToDisplay = itemsToDisplayByCategory.filter((item) => {
+    if (itemSearch === "") {
+      return true
+    }else{
+      return item.name.toLowerCase().includes(itemSearch.toLowerCase())
+    }
+  })
 
   return (
     <div className="ShoppingList">
-      <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} />
+      <ItemForm newItemName={newItemName} handleFormNameChange={handleFormNameChange} handleFormCatChange={handleFormCatChange} handleFormSubmit={handleFormSubmit}/>
+      <Filter onCategoryChange={handleCategoryChange} onSearchChange={onSearchChange} itemSearch={itemSearch}/>
       <ul className="Items">
         {itemsToDisplay.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
