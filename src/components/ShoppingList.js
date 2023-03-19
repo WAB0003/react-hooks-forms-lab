@@ -11,6 +11,7 @@ function ShoppingList({ items }) {
   const[newItemName, setNewItemName]=useState("")
 
   const[allItems, setAllItems]=useState(items)
+  
 
 
   //*function that gets new name of food
@@ -27,15 +28,16 @@ function ShoppingList({ items }) {
   }
   
   //*function for handling form submit
-  function handleFormSubmit (e,index) {
+  function handleFormSubmit (e) {
     e.preventDefault()
+    
     const newItem = {
-      id: items.length+1,
+      id: allItems.length +1, // Math.floor(Math.random()*100), // the `uuid` library can be used to generate a unique id,
       name: newItemName,
       category: newItemCategory,
     }
-    const newItemsArray = [...items,newItem]
-    setAllItems(newItemsArray)
+    const newItemsArray = [...allItems,newItem]
+    setAllItems(()=>newItemsArray)
   }
 
   //! Funtion for handle the seach of a single item
