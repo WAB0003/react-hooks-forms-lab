@@ -6,21 +6,18 @@ import Item from "./Item";
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [itemSearch, setItemSearch] = useState("")
+
   //*State variables to get new items from form
   const[newItemCategory, setNewItemCategory]=useState("Produce")
   const[newItemName, setNewItemName]=useState("")
-
   const[allItems, setAllItems]=useState(items)
-  
 
-
-  //*function that gets new name of food
+  //*function that gets new name of food from the form
   function handleFormNameChange(e) {
     setNewItemName(e.target.value)
     console.log(newItemName)
   }
   
-    
   //*Create a function that grabs category for new item
   function handleFormCatChange(e){
     setNewItemCategory(e.target.value)
@@ -43,7 +40,6 @@ function ShoppingList({ items }) {
   //! Funtion for handle the seach of a single item
   function onSearchChange(e){
     setItemSearch(e.target.value)
-    console.log(itemSearch)
   }
 
 //! Function for handlling the Category 
@@ -58,11 +54,8 @@ function ShoppingList({ items }) {
   });
 //! New function that filters items by Name
   const itemsToDisplay = itemsToDisplayByCategory.filter((item) => {
-    if (itemSearch === "") {
-      return true
-    }else{
+    if (itemSearch === "") return true ;
       return item.name.toLowerCase().includes(itemSearch.toLowerCase())
-    }
   })
 
   return (
